@@ -1,0 +1,587 @@
+{% extends "landing/base.html" %}
+{% load static %}
+{% load landing_tags %}
+
+{% block title %}مبیت - فروشگاه اینترنتی موبایل و کالای دیجیتال{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12">
+
+  <!-- ==========================================
+       SECTION 1: HERO SLIDER & SIDE BANNERS
+       ========================================== -->
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+    
+    <!-- Main Carousel (8 cols on large screens) -->
+    <div class="lg:col-span-8 relative">
+      <div class="slider-container h-[280px] sm:h-[380px] md:h-[420px] shadow-lg border border-slate-200/80 bg-slate-900">
+        
+        {% for banner in hero_sliders %}
+        <div class="slider-slide {% if forloop.first %}active{% endif %} flex items-center justify-between p-6 sm:p-10 text-white overflow-hidden" data-slide-index="{{ forloop.counter0 }}">
+          <!-- Background Image & Gradient Overlay -->
+          {% if banner.image_desktop_url %}
+          <img src="{{ banner.image_desktop_url }}" alt="{{ banner.title }}" class="absolute inset-0 w-full h-full object-cover opacity-90">
+          <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent"></div>
+          {% else %}
+          <div class="absolute inset-0 bg-gradient-to-r {{ banner.gradient }}"></div>
+          {% endif %}
+
+          <!-- Slide Content -->
+          <div class="relative z-10 max-w-lg space-y-3 sm:space-y-4">
+            {% if banner.badge %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#ef4056] text-white shadow-sm">
+              <span>{{ banner.icon }}</span>
+              <span>{{ banner.badge }}</span>
+            </span>
+            {% endif %}
+
+            <h2 class="text-xl sm:text-3xl font-black leading-tight text-white drop-shadow-sm">
+              {{ banner.title }}
+            </h2>
+
+            <p class="text-xs sm:text-sm text-slate-200 line-clamp-2 leading-relaxed">
+              {{ banner.subtitle }}
+            </p>
+
+            <div class="pt-2">
+              <a href="{{ banner.button_url }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#034694] hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+                <span>{{ banner.button_text }}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="h-full flex items-center justify-center text-white text-sm">اسلایدری تعریف نشده است.</div>
+        {% endfor %}
+
+        <!-- Navigation Buttons -->
+        <button id="sliderPrevBtn" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-md flex items-center justify-center z-20 transition" aria-label="اسلاید قبلی">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <button id="sliderNextBtn" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-800 shadow-md flex items-center justify-center z-20 transition" aria-label="اسلاید بعدی">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+
+        <!-- Dots Indicators -->
+        <div id="sliderDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+          {% for banner in hero_sliders %}
+          <button class="slider-dot w-2.5 h-2.5 rounded-full transition-all {% if forloop.first %}bg-white w-7{% else %}bg-white/50 hover:bg-white/80{% endif %}" data-index="{{ forloop.counter0 }}" aria-label="اسلاید {{ forloop.counter }}"></button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Side Banners (4 cols on large screens) -->
+    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4">
+      {% for side in hero_side_banners %}
+      <a href="{{ side.button_url }}" class="promo-banner flex-1 h-[135px] sm:h-[185px] lg:h-[202px] shadow-sm border border-slate-200/80 block group">
+        {% if side.image_desktop_url %}
+        <img src="{{ side.image_desktop_url }}" alt="{{ side.title }}" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-4">
+          <span class="text-[11px] font-bold text-amber-300 mb-1">{{ side.badge }}</span>
+          <h3 class="text-white font-bold text-xs sm:text-sm line-clamp-1 group-hover:text-blue-200 transition">{{ side.title }}</h3>
+        </div>
+        {% else %}
+        <div class="h-full bg-gradient-to-br {{ side.gradient }} p-5 flex flex-col justify-between text-white">
+          <span class="text-xs font-bold text-amber-300">{{ side.badge }}</span>
+          <div>
+            <h3 class="font-black text-sm">{{ side.title }}</h3>
+            <p class="text-xs text-slate-300 mt-1">{{ side.subtitle }}</p>
+          </div>
+          <span class="text-xs font-bold text-blue-300 flex items-center gap-1">{{ side.button_text }} &larr;</span>
+        </div>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 2: QUICK CATEGORIES (دسته‌بندی‌های محبوب مبیت)
+       ========================================== -->
+  <section id="categories" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#034694] flex items-center justify-center font-bold text-lg">📂</div>
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-slate-900">دسته‌بندی‌های محبوب مبیت</h2>
+          <p class="text-xs text-slate-500 font-medium">دسترسی سریع به صدها کالای دیجیتال با گارانتی معتبر</p>
+        </div>
+      </div>
+      <a href="#tabs" class="text-xs font-bold text-[#034694] hover:text-blue-800 flex items-center gap-1">
+        <span>مشاهده همه</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      </a>
+    </div>
+
+    <!-- Category Circles Grid -->
+    <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-4 text-center">
+      {% for cat in categories %}
+      <a href="#tabs" class="cat-circle-card flex flex-col items-center group">
+        <div class="cat-icon-wrap w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 mb-2 shadow-xs group-hover:bg-blue-50/50">
+          {% if cat.icon_url %}
+          <img src="{{ cat.icon_url }}" alt="{{ cat.name }}" class="w-full h-full object-contain">
+          {% else %}
+          <span class="text-2xl sm:text-3xl">{{ cat.icon }}</span>
+          {% endif %}
+        </div>
+        <span class="text-xs font-bold text-slate-800 group-hover:text-[#034694] transition line-clamp-1">{{ cat.name }}</span>
+        {% if cat.name_en %}
+        <span class="text-[10px] text-slate-400 font-sans hidden sm:inline">{{ cat.name_en }}</span>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 3: FLASH SALE DEALS ("شکار تخفیف مبیت")
+       ========================================== -->
+  <section id="deals" class="flash-sale-box p-6 sm:p-8 text-white shadow-xl">
+    <div class="flex flex-col lg:flex-row items-stretch gap-6 relative z-10">
+      
+      <!-- Deals Left Promo Block & Timer -->
+      <div class="lg:w-72 flex flex-col justify-between p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-3 h-3 rounded-full bg-[#ef4056] animate-ping"></span>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-rose-300">Flash Deals</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
+            شکار تخفیف مبیت
+          </h2>
+          <p class="text-xs text-blue-100 mt-2 leading-relaxed">
+            تخفیف‌های ویژه و محدود روز بر روی پرطرفدارترین گجت‌ها و لوازم دیجیتال
+          </p>
+        </div>
+
+        <!-- Live Countdown Timer -->
+        <div class="my-6">
+          <div class="text-[11px] text-blue-200 font-bold mb-2 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span>زمان باقی‌مانده تا پایان پیشنهادها:</span>
+          </div>
+          <div class="flex items-center gap-2 justify-center" id="countdownTimer">
+            <div class="timer-unit">
+              <span id="timerSeconds" class="text-base text-rose-600 font-black">۴۸</span>
+              <span class="text-[9px] text-slate-400">ثانیه</span>
+            </div>
+            <span class="text-white font-bold text-lg">:</span>
+            <div class="timer-unit">
+              <span id="timerMinutes" class="text-base text-slate-800 font-black">۳۲</span>
+              <span class="text-[9px] text-slate-400">دقیقه</span>
+            </div>
+            <span class="text-white font-bold text-lg">:</span>
+            <div class="timer-unit">
+              <span id="timerHours" class="text-base text-slate-800 font-black">۰۸</span>
+              <span class="text-[9px] text-slate-400">ساعت</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <a href="#tabs" class="w-full py-2.5 bg-white hover:bg-blue-50 text-[#034694] font-black text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
+            <span>مشاهده همه شکار تخفیف‌ها</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Deals Products Horizontal Carousel -->
+      <div class="flex-1 overflow-hidden">
+        <div class="scroll-x-smooth flex gap-4 pb-2">
+          {% for product in flash_deals %}
+          <div class="min-w-[240px] max-w-[250px] bg-white text-slate-800 rounded-2xl p-4 flex flex-col justify-between shadow-md border border-slate-100 flex-shrink-0 group relative">
+            
+            <!-- Discount Badge -->
+            {% if product.discount_percent > 0 %}
+            <div class="absolute top-3 right-3 z-10 bg-[#ef4056] text-white text-[11px] font-black px-2 py-0.5 rounded-lg shadow-sm">
+              {{ product.discount_percent|persian_digits }}٪ تخفیف
+            </div>
+            {% endif %}
+
+            <!-- Fast Delivery Pill -->
+            {% if product.fast_delivery %}
+            <div class="absolute top-3 left-3 z-10 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-emerald-100">
+              <span>⚡</span> ارسال امروز
+            </div>
+            {% endif %}
+
+            <!-- Image -->
+            <div class="w-full h-36 flex items-center justify-center my-3 relative overflow-hidden">
+              {% if product.image_url %}
+              <img src="{{ product.image_url }}" alt="{{ product.title }}" class="h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105">
+              {% else %}
+              <div class="text-5xl">{{ product.icon_placeholder }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Details -->
+            <div>
+              <div class="text-[10px] text-slate-400 font-semibold mb-1 flex items-center justify-between">
+                <span>{{ product.brand }}</span>
+                <span class="text-amber-500 font-bold flex items-center gap-0.5">
+                  ★ {{ product.rating|persian_digits }}
+                </span>
+              </div>
+              <h3 class="font-bold text-xs text-slate-900 line-clamp-2 leading-snug group-hover:text-[#034694] transition" title="{{ product.title }}">
+                {{ product.title }}
+              </h3>
+            </div>
+
+            <!-- Price & Actions -->
+            <div class="mt-4 pt-3 border-t border-slate-100">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] text-slate-400 line-through">
+                  {{ product.price|persian_intcomma }}
+                </span>
+                <div class="text-sm font-black text-[#ef4056]">
+                  {{ product.current_price|persian_intcomma }}
+                  <span class="text-[10px] font-normal text-slate-500">تومان</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <button 
+                  class="quick-view-btn py-2 border border-slate-200 hover:border-[#034694] text-slate-600 hover:text-[#034694] rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-1"
+                  data-product-id="{{ product.id }}"
+                >
+                  <span>جزئیات</span>
+                </button>
+                <button 
+                  class="add-to-cart-btn py-2 bg-[#034694] hover:bg-blue-800 text-white rounded-xl text-[11px] font-bold shadow-xs transition flex items-center justify-center gap-1"
+                  data-id="{{ product.id }}"
+                  data-title="{{ product.title }}"
+                  data-price="{{ product.current_price }}"
+                  data-image="{{ product.image_url }}"
+                  data-brand="{{ product.brand }}"
+                >
+                  <span>+ خرید</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 4: QUAD BANNERS / MIDDLE BANNERS
+       ========================================== -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {% for banner in quad_banners %}
+    <a href="{{ banner.button_url }}" class="promo-banner h-[160px] sm:h-[190px] border border-slate-200/80 shadow-xs block group">
+      {% if banner.image_desktop_url %}
+      <img src="{{ banner.image_desktop_url }}" alt="{{ banner.title }}" class="w-full h-full object-cover">
+      {% else %}
+      <div class="h-full bg-gradient-to-r {{ banner.gradient }} p-6 flex flex-col justify-between text-white">
+        <span class="text-xs font-bold text-amber-300">{{ banner.badge }}</span>
+        <h3 class="font-black text-lg">{{ banner.title }}</h3>
+        <p class="text-xs text-slate-200">{{ banner.subtitle }}</p>
+      </div>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </section>
+
+  <!-- ==========================================
+       SECTION 5: TABBED PRODUCT SHOWCASE (محصولات منتخب مبیت)
+       ========================================== -->
+  <section id="tabs" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+    
+    <!-- Tab Controls Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+      <div>
+        <h2 class="text-lg sm:text-xl font-black text-slate-900">ویترین کالاهای منتخب مبیت</h2>
+        <p class="text-xs text-slate-500 font-medium mt-1">پرفروش‌ترین، جدیدترین و بهترین مدل‌های موجود با تحویل فوری</p>
+      </div>
+
+      <!-- Tab Buttons Navigation -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1" id="productTabsContainer">
+        <button class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200" data-tab="tabFeatured">
+          🔥 پرفروش‌ترین‌ها
+        </button>
+        <button class="tab-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200" data-tab="tabViewed">
+          🌟 پربازدیدترین‌ها
+        </button>
+        <button class="tab-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200" data-tab="tabNew">
+          ⚡ جدیدترین‌ها
+        </button>
+        <button class="tab-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200" data-tab="tabGaming">
+          🎮 گیمینگ و کنسول
+        </button>
+        <button class="tab-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200" data-tab="tabAccessory">
+          🔌 لوازم جانبی اصلی
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Panels Container -->
+    <div class="pt-6">
+      
+      <!-- Panel 1: Featured -->
+      <div id="tabFeatured" class="tab-panel grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for product in featured_products %}
+          {% include "landing/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+      <!-- Panel 2: Viewed -->
+      <div id="tabViewed" class="tab-panel hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for product in viewed_products %}
+          {% include "landing/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+      <!-- Panel 3: New -->
+      <div id="tabNew" class="tab-panel hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for product in new_products %}
+          {% include "landing/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+      <!-- Panel 4: Gaming -->
+      <div id="tabGaming" class="tab-panel hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for product in gaming_products %}
+          {% include "landing/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+      <!-- Panel 5: Accessory -->
+      <div id="tabAccessory" class="tab-panel hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {% for product in accessory_products %}
+          {% include "landing/includes/product_card.html" with product=product %}
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 6: MID BANNERS (بنرهای میانی دوقلو)
+       ========================================== -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {% for banner in mid_banners %}
+    <a href="{{ banner.button_url }}" class="promo-banner h-[160px] sm:h-[190px] border border-slate-200/80 shadow-xs block group">
+      {% if banner.image_desktop_url %}
+      <img src="{{ banner.image_desktop_url }}" alt="{{ banner.title }}" class="w-full h-full object-cover">
+      {% else %}
+      <div class="h-full bg-gradient-to-r {{ banner.gradient }} p-6 flex flex-col justify-between text-white">
+        <span class="text-xs font-bold text-amber-300">{{ banner.badge }}</span>
+        <h3 class="font-black text-lg">{{ banner.title }}</h3>
+        <p class="text-xs text-slate-200">{{ banner.subtitle }}</p>
+      </div>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </section>
+
+  <!-- ==========================================
+       SECTION 7: MOBIT VALUE PROPOSITIONS ("چرا خرید از مبیت؟")
+       ========================================== -->
+  <section id="features" class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl border border-blue-900/40">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <span class="text-xs font-extrabold uppercase tracking-wider text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">
+        مزایای انحصاری مبیت
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black mt-3">چرا خرید آنلاین از مبیت؟</h2>
+      <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+        ما در مبیت با بیش از یک دهه تجربه در بازار کالای دیجیتال، خریدی امن، آسان و با بهترین قیمت را برای شما فراهم کرده‌ایم.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Feature 1 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-blue-600/30 text-blue-400 flex items-center justify-center text-2xl mb-3">🎖️</div>
+        <h3 class="font-black text-sm mb-1">گارانتی طلایی و اصالت ۱۰۰٪</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">تمامی کالاهای مبیت با هولوگرام اصالت، فاکتور رسمی معتبر و ضمانت طلایی به فروش می‌رسند.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-rose-600/30 text-rose-400 flex items-center justify-center text-2xl mb-3">🛡️</div>
+        <h3 class="font-black text-sm mb-1">۷ روز ضمانت بازگشت وجه</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">در صورت عدم رضایت یا وجود هرگونه ایراد فنی، کالا تا ۷ روز بدون قید و شرط تعویض یا مرجوع می‌گردد.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-2xl mb-3">⚡</div>
+        <h3 class="font-black text-sm mb-1">ارسال سریع و اکسپرس کشور</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">ارسال فوری در شهر کرمان و تحویل اکسپرس به سراسر کشور از طریق پست پیشتاز و تیپاکس با بسته‌بندی ضدضربه.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-amber-600/30 text-amber-400 flex items-center justify-center text-2xl mb-3">💳</div>
+        <h3 class="font-black text-sm mb-1">خرید اقساطی بدون ضامن</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">همکاری با سامانه‌های دیجی‌پی و اسنپ‌پی جهت پرداخت ۴ قسطه آسان بدون نیاز به چک و ضامن بانکی.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-purple-600/30 text-purple-400 flex items-center justify-center text-2xl mb-3">🤝</div>
+        <h3 class="font-black text-sm mb-1">مبیت همکار (پخش عمده کشور)</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">ارائه قیمت‌های استثنایی و پنل اختصاصی فروش عمده برای فروشگاه‌ها و همکاران صنف موبایل و کامپیوتر.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition">
+        <div class="w-12 h-12 rounded-xl bg-cyan-600/30 text-cyan-400 flex items-center justify-center text-2xl mb-3">📞</div>
+        <h3 class="font-black text-sm mb-1">مشاوره تخصصی و پشتیبانی ۷ روزه</h3>
+        <p class="text-xs text-slate-300 leading-relaxed">تیم کارشناسان فنی مبیت آماده پاسخگویی و راهنمایی شما در انتخاب مناسب‌ترین کالا هستند (۰۳۴-۹۱۰۰۲۴۲۵).</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 8: POPULAR BRANDS
+       ========================================== -->
+  <section class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm text-center">
+    <div class="mb-6">
+      <h2 class="text-base sm:text-lg font-black text-slate-900">محبوب‌ترین برندهای کالای دیجیتال در مبیت</h2>
+      <p class="text-xs text-slate-500 font-medium">نمایندگی رسمی و گارانتی معتبر شرکتی</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">SAMSUNG</span>
+        <span class="text-[10px] text-slate-400 mt-1">سامسونگ</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">Apple</span>
+        <span class="text-[10px] text-slate-400 mt-1">اپل</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">Xiaomi</span>
+        <span class="text-[10px] text-slate-400 mt-1">شیائومی</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">HONOR</span>
+        <span class="text-[10px] text-slate-400 mt-1">آنر</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">ASUS</span>
+        <span class="text-[10px] text-slate-400 mt-1">ایسوس</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">SONY</span>
+        <span class="text-[10px] text-slate-400 mt-1">سونی</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">ANKER</span>
+        <span class="text-[10px] text-slate-400 mt-1">انکر</span>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-100 hover:border-[#034694] hover:shadow-xs transition flex flex-col items-center justify-center">
+        <span class="text-xl font-black text-slate-800">HADRON</span>
+        <span class="text-[10px] text-slate-400 mt-1">هادرون</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 9: MOBIT MAG (مجله و راهنمای خرید مبیت)
+       ========================================== -->
+  <section id="blog" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-lg">📝</div>
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-slate-900">مجله و راهنمای خرید مبیت (Mobit Mag)</h2>
+          <p class="text-xs text-slate-500 font-medium">جدیدترین بررسی‌ها، اخبار فناوری و آموزش‌های کاربردی</p>
+        </div>
+      </div>
+      <a href="#blog" class="text-xs font-bold text-[#034694] hover:text-blue-800 flex items-center gap-1">
+        <span>مشاهده همه مقالات</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for article in articles %}
+      <article class="rounded-2xl border border-slate-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition group">
+        <div>
+          <div class="h-44 bg-slate-100 relative overflow-hidden">
+            {% if article.image_url %}
+            <img src="{{ article.image_url }}" alt="{{ article.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center text-4xl bg-blue-50 text-blue-400">{{ article.icon }}</div>
+            {% endif %}
+            <span class="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-lg shadow-xs">
+              {{ article.category_name }}
+            </span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-sm text-slate-900 line-clamp-2 leading-relaxed group-hover:text-[#034694] transition">
+              {{ article.title }}
+            </h3>
+            <p class="text-xs text-slate-500 line-clamp-2 mt-2 leading-relaxed">
+              {{ article.excerpt }}
+            </p>
+          </div>
+        </div>
+        <div class="px-5 pb-4 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+          <span>✍️ {{ article.author }}</span>
+          <span>⏱️ {{ article.read_time }}</span>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 10: NEWSLETTER & APP DOWNLOAD BANNER
+       ========================================== -->
+  <section class="bg-gradient-to-r from-[#034694] via-[#0b53a4] to-[#022f64] text-white rounded-3xl p-8 sm:p-10 shadow-lg relative overflow-hidden">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+      
+      <!-- Newsletter Form -->
+      <div class="max-w-xl">
+        <span class="bg-[#ef4056] text-white px-3 py-1 rounded-full text-[11px] font-bold">باشگاه مشتریان مبیت</span>
+        <h2 class="text-xl sm:text-2xl font-black mt-3">دریافت کد تخفیف ویژه خرید اول</h2>
+        <p class="text-xs sm:text-sm text-blue-100 mt-2 leading-relaxed">
+          با عضویت در خبرنامه مبیت، از شگفت‌انگیزترین جشنواره‌های فصلی و کدهای تخفیف زودتر از دیگران باخبر شوید.
+        </p>
+
+        <form id="newsletterForm" method="POST" action="{% url 'landing:newsletter_subscribe' %}" class="mt-5 flex flex-col sm:flex-row gap-2 max-w-md">
+          {% csrf_token %}
+          <input 
+            type="text" 
+            name="contact" 
+            placeholder="شماره موبایل یا ایمیل شما..." 
+            required 
+            class="px-4 py-3 rounded-xl bg-white text-slate-800 text-xs outline-none flex-1 font-medium placeholder-slate-400 border border-transparent focus:border-amber-400"
+          >
+          <button type="submit" class="px-6 py-3 bg-[#ef4056] hover:bg-red-600 text-white rounded-xl text-xs font-black transition shadow-md whitespace-nowrap">
+            عضویت و دریافت کد
+          </button>
+        </form>
+      </div>
+
+      <!-- App Download Buttons -->
+      <div class="text-center lg:text-left">
+        <h3 class="text-sm font-bold text-blue-200 mb-3">دانلود اپلیکیشن مبیت</h3>
+        <div class="flex flex-wrap gap-2 justify-center lg:justify-end">
+          <button onclick="showToast('دانلود از کافه بازار به زودی فعال می‌شود.', 'info')" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition flex items-center gap-2">
+            <span>🛒</span> کافه بازار
+          </button>
+          <button onclick="showToast('دانلود از مایکت به زودی فعال می‌شود.', 'info')" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition flex items-center gap-2">
+            <span>⚡</span> مایکت
+          </button>
+          <button onclick="showToast('نسخه وب اپلیکیشن PWA مبیت آماده است.', 'success')" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-bold transition flex items-center gap-2">
+            <span>🌐</span> وب‌اپ PWA
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+{% endblock %}

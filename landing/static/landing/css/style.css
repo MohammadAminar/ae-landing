@@ -1,0 +1,302 @@
+/* ==========================================================================
+   مبیت (mobit.ir) - فروشگاه آنلاین موبایل و کالای دیجیتال
+   Design System & Master Stylesheet
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --mobit-navy: #034694;
+  --mobit-navy-dark: #022f64;
+  --mobit-blue: #1e60d0;
+  --mobit-blue-light: #eff6ff;
+  --mobit-coral: #ef4056;
+  --mobit-coral-dark: #d82b40;
+  --mobit-orange: #ff6e26;
+  --mobit-amber: #f59e0b;
+  --mobit-green: #10b981;
+  --mobit-gray-50: #f8fafc;
+  --mobit-gray-100: #f1f5f9;
+  --mobit-gray-200: #e2e8f0;
+  --mobit-gray-400: #94a3b8;
+  --mobit-gray-600: #475569;
+  --mobit-gray-800: #1e293b;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--mobit-gray-50);
+  color: var(--mobit-gray-800);
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--mobit-gray-100);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mobit-navy);
+}
+
+/* Horizontal smooth scroll container */
+.scroll-x-smooth {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.scroll-x-smooth::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Mobit Brand Gradient */
+.bg-mobit-navy {
+  background-color: var(--mobit-navy);
+}
+.text-mobit-navy {
+  color: var(--mobit-navy);
+}
+.border-mobit-navy {
+  border-color: var(--mobit-navy);
+}
+
+.gradient-mobit {
+  background: linear-gradient(135deg, #034694 0%, #0d5bb5 50%, #022f64 100%);
+}
+
+.gradient-deal {
+  background: linear-gradient(135deg, #ef4056 0%, #ff5722 60%, #e63946 100%);
+}
+
+/* Category Circle Cards */
+.cat-circle-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cat-circle-card:hover {
+  transform: translateY(-4px);
+}
+.cat-circle-card:hover .cat-icon-wrap {
+  box-shadow: 0 10px 20px -3px rgba(3, 70, 148, 0.25);
+  border-color: var(--mobit-navy);
+  transform: scale(1.06);
+}
+.cat-icon-wrap {
+  transition: all 0.25s ease;
+}
+
+/* Product Cards */
+.product-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  border: 1px solid var(--mobit-gray-200);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px -8px rgba(3, 70, 148, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-color: #93c5fd;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.05);
+}
+
+.product-img {
+  transition: transform 0.35s ease;
+}
+
+/* Flash Sale Deals Box */
+.flash-sale-box {
+  background: linear-gradient(135deg, #034694 0%, #0c4272 40%, #1e3a8a 100%);
+  border-radius: var(--radius-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.flash-sale-box::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(239, 64, 86, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.flash-sale-box::after {
+  content: "";
+  position: absolute;
+  bottom: -30%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Timer Unit */
+.timer-unit {
+  min-width: 44px;
+  height: 48px;
+  background: #ffffff;
+  color: var(--mobit-gray-800);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: 800;
+}
+
+/* Hero Carousel */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+}
+
+.slider-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-out;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+.slider-slide.active {
+  position: relative;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Promo Banner Cards */
+.promo-banner {
+  transition: all 0.28s ease;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  position: relative;
+}
+.promo-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.15);
+}
+.promo-banner:hover img {
+  transform: scale(1.03);
+}
+.promo-banner img {
+  transition: transform 0.4s ease;
+}
+
+/* Tab Navigation */
+.tab-btn {
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background-color: var(--mobit-navy);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(3, 70, 148, 0.25);
+}
+
+/* Toast Container */
+#toastContainer {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 380px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.3s ease;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Cart Drawer */
+#cartDrawerOverlay {
+  transition: opacity 0.3s ease;
+}
+#cartDrawer {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modal Backdrops */
+.modal-overlay {
+  transition: opacity 0.25s ease;
+}
+.modal-dialog {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+/* Pulse Glow Effect */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 64, 86, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 64, 86, 0);
+  }
+}
+.pulse-badge {
+  animation: pulseGlow 2s infinite;
+}
+
+/* Feature Badge */
+.trust-badge-card {
+  transition: all 0.25s ease;
+  border: 1px solid var(--mobit-gray-200);
+}
+.trust-badge-card:hover {
+  border-color: var(--mobit-navy);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -4px rgba(3, 70, 148, 0.1);
+}

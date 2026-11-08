@@ -1,0 +1,435 @@
+{% load static %}
+{% load landing_tags %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}مبیت - فروشگاه اینترنتی موبایل و کالای دیجیتال{% endblock %}</title>
+  <meta name="description" content="فروشگاه اینترنتی مبیت؛ مرجع تخصصی خرید انواع گوشی موبایل، لپ‌تاپ، تبلت، ساعت هوشمند، پاوربانک و لوازم جانبی دیجیتال با بهترین قیمت و گارانتی طلایی معتبر">
+  <link rel="icon" type="image/svg+xml" href="{% static 'landing/images/logo-mobit.svg' %}">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mobit: {
+              navy: '#034694',
+              dark: '#022f64',
+              blue: '#1e60d0',
+              light: '#eff6ff',
+              coral: '#ef4056',
+              orange: '#ff6e26',
+              amber: '#f59e0b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Font: Vazirmatn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="{% static 'landing/css/style.css' %}">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-800 selection:text-white">
+
+  <!-- ==========================================
+       TOP ANNOUNCEMENT BAR
+       ========================================== -->
+  <aside class="bg-gradient-to-r from-[#034694] via-[#0b53a4] to-[#022f64] text-white text-xs py-2 px-4 shadow-sm border-b border-blue-900/40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="bg-[#ef4056] text-white px-2.5 py-0.5 rounded-full font-bold text-[11px] shadow-sm pulse-badge">شکار تخفیف</span>
+        <span class="text-[11px] sm:text-xs text-blue-50 font-medium">
+          🚚 ارسال سریع به سراسر کشور | ۷ روز ضمانت بازگشت وجه | اصالت کالا و گارانتی طلایی مبیت
+        </span>
+      </div>
+      <div class="hidden md:flex items-center gap-4 text-xs text-blue-100 font-medium">
+        <a href="#deals" class="hover:text-white transition flex items-center gap-1">
+          <span>🔥 پیشنهاد‌های شگفت‌انگیز</span>
+        </a>
+        <span>|</span>
+        <a href="#become-seller" onclick="showToast('بخش فروشندگان مبیت به زودی در دسترس قرار می‌گیرد.', 'info')" class="hover:text-white transition">فروشنده شوید</a>
+        <span>|</span>
+        <a href="#hamkar" onclick="showToast('سامانه مبیت همکار ویژه خریداران عمده و همکاران گرامی می‌باشد.', 'info')" class="hover:text-white transition font-semibold text-amber-300">مبیت همکار (قیمت عمده)</a>
+        <span>|</span>
+        <a href="tel:03491002425" class="hover:text-white transition flex items-center gap-1">
+          <span>📞 پشتیبانی: ۰۳۴-۹۱۰۰۲۴۲۵</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       MAIN HEADER & NAVBAR
+       ========================================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-2.5">
+      <div class="flex items-center justify-between gap-4">
+        
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition" aria-label="باز کردن منو">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+
+        <!-- Official Mobit Logo -->
+        <a href="{% url 'landing:home' %}" class="flex items-center gap-2 flex-shrink-0 group" title="مبیت - فروشگاه اینترنتی موبایل و کالای دیجیتال">
+          <img src="{% static 'landing/images/logo-mobit.svg' %}" alt="لوگوی فروشگاه اینترنتی مبیت" class="h-9 sm:h-11 w-auto object-contain transition group-hover:scale-102">
+        </a>
+
+        <!-- Live Instant Search Bar -->
+        <div class="flex-1 max-w-2xl relative hidden sm:block">
+          <div class="flex items-center bg-slate-100/90 rounded-2xl px-4 py-2.5 border border-slate-200 focus-within:border-[#034694] focus-within:bg-white focus-within:shadow-md transition">
+            <svg class="w-5 h-5 text-slate-400 ml-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input 
+              id="mainSearchInput"
+              type="text" 
+              placeholder="جستجوی نام کالا، برند یا مدل (گوشی سامسونگ، آیفون ۱۶، هندزفری انکر، ساعت هوشمند...)" 
+              class="bg-transparent w-full text-xs text-slate-800 outline-none placeholder-slate-400 font-medium"
+              autocomplete="off"
+            >
+            <span class="text-[11px] bg-white border border-slate-200 text-slate-400 px-2 py-0.5 rounded-lg shadow-xs hidden lg:inline font-mono">Ctrl + K</span>
+          </div>
+
+          <!-- Instant Search Dropdown Preview -->
+          <div id="searchDropdown" class="hidden absolute top-full right-0 left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden max-h-96 overflow-y-auto">
+            <div class="p-2.5 border-b border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500 font-medium">
+              <span class="flex items-center gap-1.5 font-bold text-slate-700">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                نتایج جستجو در محصولات مبیت:
+              </span>
+              <button type="button" id="closeSearchBtn" class="text-slate-400 hover:text-slate-700 text-xs">بستن</button>
+            </div>
+            <div id="searchResultsList" class="divide-y divide-slate-100"></div>
+          </div>
+        </div>
+
+        <!-- City Selector & User Actions (Auth & Cart) -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          
+          <!-- City Selector Button -->
+          <button id="openCityModalBtn" class="hidden xl:flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-medium transition" title="انتخاب شهر و مقصد تحویل سفارش">
+            <svg class="w-4 h-4 text-[#034694]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <span id="currentCityLabel">ارسال به سراسر ایران</span>
+          </button>
+
+          <!-- Login / Register Button -->
+          <button onclick="showToast('بخش ورود و ثبت‌نام کاربران مبیت در حال ارتقا است.', 'info')" class="flex items-center gap-1.5 px-3.5 py-2 border border-slate-200 hover:border-[#034694] rounded-xl text-xs font-bold text-slate-700 hover:text-[#034694] hover:bg-blue-50/50 transition">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <span class="hidden md:inline">ورود / ثبت‌نام</span>
+          </button>
+
+          <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+
+          <!-- Shopping Cart Button with Dynamic Badge -->
+          <button id="openCartBtn" class="relative flex items-center justify-center p-2.5 bg-blue-50 text-[#034694] hover:bg-blue-100 rounded-xl transition shadow-xs group" title="سبد خرید مبیت">
+            <svg class="w-5 h-5 transition group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <span id="cartBadge" class="hidden absolute -top-1.5 -left-1.5 min-w-[20px] h-5 bg-[#ef4056] text-white text-[11px] font-black rounded-full flex items-center justify-center px-1 shadow">۰</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Search Bar (Only shown on small screens) -->
+      <div class="sm:hidden relative">
+        <div class="flex items-center bg-slate-100 rounded-xl px-3 py-2 border border-slate-200">
+          <svg class="w-4 h-4 text-slate-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input 
+            id="mobileSearchInput"
+            type="text" 
+            placeholder="جستجوی کالا در مبیت..." 
+            class="bg-transparent w-full text-xs text-slate-800 outline-none placeholder-slate-400"
+          >
+        </div>
+      </div>
+
+      <!-- Main Navigation Menu Bar -->
+      <nav class="pt-2 border-t border-slate-100 hidden lg:flex items-center justify-between text-xs text-slate-600 font-medium overflow-x-auto">
+        <div class="flex items-center gap-6 whitespace-nowrap">
+          <a href="#categories" class="text-[#034694] font-bold flex items-center gap-1.5 hover:text-blue-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+            دسته‌بندی کالاها
+          </a>
+          <a href="#deals" class="text-[#ef4056] font-bold flex items-center gap-1 hover:text-red-700">
+            <span>🔥</span> شکار تخفیف
+          </a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">📱 گوشی موبایل</a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">💻 لپ‌تاپ و کامپیوتر</a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">⌚ ساعت هوشمند</a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">🎧 هندزفری و هدفون</a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">🔋 پاوربانک و شارژر</a>
+          <a href="#tabs" class="hover:text-[#034694] transition flex items-center gap-1">🎮 کنسول بازی</a>
+        </div>
+        <div class="flex items-center gap-4 text-slate-500 text-xs">
+          <a href="#features" class="hover:text-[#034694] transition font-semibold text-emerald-700 flex items-center gap-1">
+            <span>💳</span> خرید اقساطی بدون ضامن
+          </a>
+          <span>|</span>
+          <a href="#blog" class="hover:text-[#034694] transition flex items-center gap-1">
+            <span>📖</span> مجله مبیت
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobileDrawer" class="hidden lg:hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm">
+      <div class="w-72 max-w-[85%] bg-white h-full shadow-2xl p-5 flex flex-col justify-between overflow-y-auto">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <img src="{% static 'landing/images/logo-mobit.svg' %}" alt="مبیت" class="h-8">
+            <button id="closeMobileDrawerBtn" class="p-1 text-slate-400 hover:text-slate-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          <div class="py-4 flex flex-col gap-3 text-xs font-semibold text-slate-700">
+            <a href="#deals" class="text-rose-600 flex items-center gap-2 py-2">🔥 شکار تخفیف‌های مبیت</a>
+            <a href="#categories" class="flex items-center gap-2 py-2">📂 دسته‌بندی کالاها</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">📱 گوشی موبایل</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">💻 لپ‌تاپ و اولترابوک</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">⌚ ساعت هوشمند</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">🎧 هدفون و هندزفری</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">🔋 پاوربانک و شارژر</a>
+            <a href="#tabs" class="flex items-center gap-2 py-2">🎮 کنسول بازی</a>
+            <a href="#features" class="flex items-center gap-2 py-2 text-emerald-700">💳 خرید اقساطی بدون ضامن</a>
+            <a href="#blog" class="flex items-center gap-2 py-2">📖 مجله تکنولوژی مبیت</a>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 text-xs text-slate-500">
+          <p>📞 پشتیبانی: ۰۳۴-۹۱۰۰۲۴۲۵</p>
+          <p class="mt-1">دفتر مرکزی: کرمان، میدان قرنی</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN CONTENT CONTAINER
+       ========================================== -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ==========================================
+       CART DRAWER (کشوی سبد خرید شناور)
+       ========================================== -->
+  <div id="cartDrawerOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity">
+    <div id="cartDrawer" class="fixed top-0 bottom-0 left-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col justify-between transform -translate-x-full transition-transform">
+      <!-- Drawer Header -->
+      <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#034694] flex items-center justify-center font-bold">🛒</div>
+          <div>
+            <h3 class="font-black text-slate-800 text-sm">سبد خرید شما در مبیت</h3>
+            <p id="drawerItemCount" class="text-[11px] text-slate-500 font-medium">۰ کالا</p>
+          </div>
+        </div>
+        <button id="closeCartBtn" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg transition" aria-label="بستن سبد خرید">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Drawer Items List -->
+      <div id="cartItemsList" class="flex-1 overflow-y-auto p-4 divide-y divide-slate-100">
+        <!-- Rendered dynamically via JavaScript -->
+        <div class="py-16 text-center text-slate-400">
+          <div class="text-4xl mb-3">🛍️</div>
+          <p class="text-sm font-semibold">سبد خرید شما در حال حاضر خالی است.</p>
+          <p class="text-xs mt-1 text-slate-400">کالاهای مورد علاقه خود را اضافه کنید.</p>
+        </div>
+      </div>
+
+      <!-- Drawer Footer (Total & Checkout) -->
+      <div class="p-4 border-t border-slate-100 bg-slate-50">
+        <div class="flex items-center justify-between text-xs mb-2 text-slate-500">
+          <span>هزینه ارسال مبیت اکسپرس:</span>
+          <span class="text-emerald-600 font-bold">رایگان (جشنواره)</span>
+        </div>
+        <div class="flex items-center justify-between text-sm font-black text-slate-800 mb-4">
+          <span>مبلغ قابل پرداخت:</span>
+          <div class="text-base font-black text-[#034694]">
+            <span id="cartTotalPrice">۰</span>
+            <span class="text-xs font-normal text-slate-500">تومان</span>
+          </div>
+        </div>
+        <button id="checkoutBtn" class="w-full py-3 bg-[#034694] hover:bg-blue-800 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+          <span>ثبت سفارش و ادامه خرید</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       QUICK VIEW PRODUCT MODAL (پیش‌نمایش سریع کالا)
+       ========================================== -->
+  <div id="quickViewModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity flex items-center justify-center p-4">
+    <div id="quickViewDialog" class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden transform scale-95 transition-all">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <span class="text-xs font-bold text-slate-500 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-[#034694]"></span>
+          پیش‌نمایش سریع کالا در مبیت
+        </span>
+        <button id="closeQuickViewBtn" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="quickViewContent" class="p-6">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       CITY SELECTOR MODAL (انتخاب شهر و مقصد تحویل)
+       ========================================== -->
+  <div id="cityModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 opacity-0 pointer-events-none transition-opacity flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-100 overflow-hidden p-6">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+          <span>📍</span> انتخاب شهر مقصد تحویل
+        </h3>
+        <button id="closeCityModalBtn" class="text-slate-400 hover:text-slate-700">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <p class="text-xs text-slate-500 mt-3 mb-4">با انتخاب شهر، شیوه و هزینه ارسال مبیت اکسپرس به صورت دقیق محاسبه خواهد شد:</p>
+      
+      <div class="grid grid-cols-3 gap-2 text-xs font-medium text-slate-700 mb-4">
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="کرمان (تحویل فوری)">کرمان</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="تهران">تهران</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="مشهد">مشهد</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="اصفهان">اصفهان</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="شیراز">شیراز</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="تبریز">تبریز</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="اهواز">اهواز</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="کرج">کرج</button>
+        <button class="city-opt-btn p-2.5 rounded-xl border border-slate-200 hover:border-[#034694] hover:bg-blue-50 text-center transition" data-city="سایر شهرستان‌ها">سایر شهرها</button>
+      </div>
+      <p class="text-[11px] text-slate-400 text-center">دفتر مرکزی و انبار اصلی مبیت در شهر کرمان واقع شده است.</p>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- ==========================================
+       MOBIT OFFICIAL FOOTER
+       ========================================== -->
+  <footer id="footer" class="bg-white border-t border-slate-200 pt-12 pb-8 mt-16 text-slate-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Top Section: Logo, Slogan & Back to Top -->
+      <div class="flex flex-col sm:flex-row items-center justify-between pb-8 border-b border-slate-100 gap-4">
+        <div class="flex items-center gap-3">
+          <img src="{% static 'landing/images/logo-mobit.svg' %}" alt="مبیت" class="h-10 w-auto">
+          <div>
+            <div class="text-xs text-slate-500 font-medium">فروشگاه اینترنتی موبایل و کالای دیجیتال</div>
+          </div>
+        </div>
+        <button id="backToTopBtn" class="flex items-center gap-2 px-4 py-2 border border-slate-200 hover:border-[#034694] text-xs font-bold text-slate-600 hover:text-[#034694] rounded-xl transition">
+          <span>بازگشت به بالای صفحه</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+        </button>
+      </div>
+
+      <!-- Trust Propositions Row -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 py-8 border-b border-slate-100 text-center">
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#034694] flex items-center justify-center text-xl mb-2">⚡</div>
+          <span class="text-xs font-bold text-slate-800">تحویل اکسپرس و سریع</span>
+          <span class="text-[11px] text-slate-400 mt-0.5">ارسال به تمام نقاط کشور</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 rounded-2xl bg-rose-50 text-[#ef4056] flex items-center justify-center text-xl mb-2">🛡️</div>
+          <span class="text-xs font-bold text-slate-800">۷ روز ضمانت بازگشت</span>
+          <span class="text-[11px] text-slate-400 mt-0.5">تضمین سلامت و عودت کالا</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-2">🎖️</div>
+          <span class="text-xs font-bold text-slate-800">ضمانت اصالت ۱۰۰٪</span>
+          <span class="text-[11px] text-slate-400 mt-0.5">گارانتی طلایی معتبر مبیت</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-2">💳</div>
+          <span class="text-xs font-bold text-slate-800">خرید اقساطی بدون ضامن</span>
+          <span class="text-[11px] text-slate-400 mt-0.5">اسنپ‌پی و دیجی‌پی در ۴ قسط</span>
+        </div>
+        <div class="flex flex-col items-center col-span-2 md:col-span-1">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-2">📞</div>
+          <span class="text-xs font-bold text-slate-800">پشتیبانی ۷ روز هفته</span>
+          <span class="text-[11px] text-slate-400 mt-0.5">۰۳۴-۹۱۰۰۲۴۲۵</span>
+        </div>
+      </div>
+
+      <!-- Links & Info Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-b border-slate-100 text-xs">
+        <div>
+          <h4 class="font-black text-slate-900 text-sm mb-3">راهنمای خرید از مبیت</h4>
+          <ul class="space-y-2 text-slate-500">
+            <li><a href="#footer" class="hover:text-[#034694] transition">نحوه ثبت سفارش در مبیت</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">رویه‌های ارسال سفارش</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">شیوه‌های پرداخت و خرید اقساطی</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">شرایط و قوانین گارانتی طلایی</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-slate-900 text-sm mb-3">خدمات مشتریان مبیت</h4>
+          <ul class="space-y-2 text-slate-500">
+            <li><a href="#footer" class="hover:text-[#034694] transition">پاسخ به پرسش‌های متداول (FAQ)</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">رویه‌های بازگرداندن ۷ روزه کالا</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">حریم خصوصی و امنیت کاربران</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">گزارش خطا و بازخورد سفارش</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-slate-900 text-sm mb-3">درباره فروشگاه مبیت</h4>
+          <ul class="space-y-2 text-slate-500">
+            <li><a href="#footer" class="hover:text-[#034694] transition">درباره مبیت و داستان ما</a></li>
+            <li><a href="#hamkar" class="hover:text-[#034694] transition font-bold text-[#034694]">مبیت همکار (پخش عمده کشور)</a></li>
+            <li><a href="#blog" class="hover:text-[#034694] transition">مجله تکنولوژی مبیت مگ</a></li>
+            <li><a href="#footer" class="hover:text-[#034694] transition">فرصت‌های شغلی و استخدام</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-slate-900 text-sm mb-3">تماس و اطلاعات دفتر مرکزی</h4>
+          <p class="text-slate-500 leading-relaxed mb-2">
+            📍 کرمان، میدان قرنی، خیابان پروین اعتصامی، ساختمان پدر، فروشگاه اینترنتی مبیت
+          </p>
+          <p class="text-slate-500 mb-1">
+            📞 تلفن تماس: <a href="tel:03491002425" class="font-bold text-slate-800 hover:text-[#034694]">۰۳۴-۹۱۰۰۲۴۲۵</a>
+          </p>
+          <p class="text-slate-500 mb-3">
+            ✉️ ایمیل: <a href="mailto:info@mobit.ir" class="hover:text-[#034694]">info@mobit.ir</a>
+          </p>
+          <div class="text-[11px] text-slate-400">
+            ساعات پاسخگویی: شنبه تا چهارشنبه ۸ الی ۲۱ | پنجشنبه‌ها ۸ الی ۲۰:۳۰
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications & Rights -->
+      <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>
+          تمامی حقوق مادی و معنوی این وب‌سایت متعلق به <strong>فروشگاه اینترنتی مبیت (mobit.ir)</strong> می‌باشد. © {% current_jalali_year %}
+        </p>
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-600 font-medium">اینماد الکترونیکی ۵ ستاره</span>
+          <span class="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-600 font-medium">عضو نظام صنفی رایانه‌ای</span>
+          <span class="px-2.5 py-1 bg-slate-100 rounded-lg text-slate-600 font-medium">ضمانت اصالت و سلامت فیزیکی</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'landing/js/main.js' %}"></script>
+</body>
+</html>
